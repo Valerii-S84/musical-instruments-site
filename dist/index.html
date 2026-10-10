@@ -1,28 +1,237 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uk">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#000000">
-<title>Скрипка</title>
+<meta name="theme-color" content="#10151c">
+<meta name="description" content="Обери інструмент і грай у браузері: гітара та скрипка вже доступні, віолончель — незабаром.">
+<title>Знайди свій звук — студія інструментів</title>
 <meta property="og:type" content="website">
-<meta property="og:title" content="">
-<meta property="og:description" content="">
+<meta property="og:title" content="Знайди свій звук">
+<meta property="og:description" content="Скрипка та гітара — грай просто в браузері. Віолончель з’явиться згодом.">
 <meta property="og:url" content="https://violin-cherry-velvet.svalerchik.chatgpt.site/">
-<meta property="og:image" content="https://violin-cherry-velvet.svalerchik.chatgpt.site/violin-cover-v2.png">
-<meta property="og:image:secure_url" content="https://violin-cherry-velvet.svalerchik.chatgpt.site/violin-cover-v2.png">
+<meta property="og:image" content="https://violin-cherry-velvet.svalerchik.chatgpt.site/ensemble-preview-v2.png">
+<meta property="og:image:secure_url" content="https://violin-cherry-velvet.svalerchik.chatgpt.site/ensemble-preview-v2.png">
 <meta property="og:image:type" content="image/png">
 <meta property="og:image:width" content="1536">
 <meta property="og:image:height" content="1024">
-<meta property="og:image:alt" content="Скрипка зі смичком на вишневому оксамиті">
+<meta property="og:image:alt" content="Скрипка, гітара і віолончель у студійному світлі">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="">
-<meta name="twitter:description" content="">
-<meta name="twitter:image" content="https://violin-cherry-velvet.svalerchik.chatgpt.site/violin-cover-v2.png">
+<meta name="twitter:title" content="Знайди свій звук">
+<meta name="twitter:description" content="Обери інструмент і грай просто в браузері.">
+<meta name="twitter:image" content="https://violin-cherry-velvet.svalerchik.chatgpt.site/ensemble-preview-v2.png">
 <link rel="canonical" href="https://violin-cherry-velvet.svalerchik.chatgpt.site/">
+<link rel="icon" type="image/svg+xml" href="./favicon.svg">
 <style>
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;background:#000}a{display:grid;place-items:center;width:100%;min-height:100vh;min-height:100dvh;background:#000;cursor:pointer;touch-action:manipulation}img{display:block;width:100%;height:100vh;height:100dvh;object-fit:contain}a:focus-visible{outline:2px solid #d1aa72;outline-offset:-4px}
+:root{color-scheme:dark;--text:#f4f3f0;--muted:#a8b0bc;--edge:#ffffff26;--ice:#c8dfec}
+*{box-sizing:border-box}
+html{background:#0b1017}
+body{min-width:280px;min-height:100vh;min-height:100dvh;margin:0;color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(ellipse 66% 44% at 50% 44%,#25394b 0,#141f2a 48%,transparent 100%),linear-gradient(160deg,#161d25,#0a0f16 68%)}
+button,a{-webkit-tap-highlight-color:transparent}
+button{font:inherit}
+.shell{width:min(100%,1180px);min-height:100vh;min-height:100dvh;margin:auto;padding:max(22px,env(safe-area-inset-top)) max(18px,env(safe-area-inset-right)) max(20px,env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.brand{align-self:stretch;display:flex;align-items:center;gap:10px;max-width:1040px;margin:0 auto;width:100%;color:#e7edf1;font-size:11px;font-weight:750;letter-spacing:.22em;text-transform:uppercase}
+.brand-mark{width:22px;height:22px;display:flex;align-items:center;justify-content:center;gap:3px;border:1px solid #e7edf178;border-radius:7px}
+.brand-mark i{display:block;width:2px;border-radius:2px;background:#d8e6ed}.brand-mark i:nth-child(1){height:6px}.brand-mark i:nth-child(2){height:12px}.brand-mark i:nth-child(3){height:8px}
+.intro{margin:clamp(24px,5vh,50px) auto 0;text-align:center}
+h1{margin:0;font-size:clamp(31px,6vw,62px);font-weight:650;letter-spacing:-.055em;line-height:1.06}
+.experience{width:100%;max-width:1000px;display:flex;flex:1;flex-direction:column;align-items:center;justify-content:center}
+.scene{position:relative;isolation:isolate;width:100%;height:clamp(320px,49dvh,530px);max-height:530px;margin-top:20px;perspective:1100px;touch-action:pan-y;cursor:grab;user-select:none;-webkit-user-select:none}
+.scene.is-dragging{cursor:grabbing}
+.scene.is-dragging .instrument{transition:none}
+.scene::before{content:"";position:absolute;z-index:-1;left:50%;top:9%;width:min(70%,570px);height:76%;transform:translateX(-50%);background:radial-gradient(ellipse at center,#8097a32a 0,#536e7d15 38%,transparent 69%);filter:blur(10px);pointer-events:none}
+.scene::after{content:"";position:absolute;z-index:-1;bottom:17px;left:50%;width:min(62%,420px);height:37px;transform:translateX(-50%);background:radial-gradient(ellipse,#000b,transparent 72%);filter:blur(9px);pointer-events:none}
+.instrument{position:absolute;inset:0 auto 0 50%;width:min(70%,340px);height:100%;padding:0;border:0;background:none;color:inherit;transform-style:preserve-3d;transition:transform .56s cubic-bezier(.2,.72,.2,1),opacity .42s ease,filter .42s ease;will-change:transform,opacity;cursor:pointer}
+.instrument[data-position="center"]{z-index:3;transform:translate3d(-50%,0,95px) rotateY(0) scale(1);opacity:1;filter:none}
+.instrument[data-position="left"]{z-index:2;transform:translate3d(calc(-50% - var(--slide)),10px,-90px) rotateY(24deg) scale(.88);opacity:.84;filter:saturate(.86)}
+.instrument[data-position="right"]{z-index:2;transform:translate3d(calc(-50% + var(--slide)),10px,-90px) rotateY(-24deg) scale(.88);opacity:.84;filter:saturate(.86)}
+.instrument[data-position="hidden-left"]{z-index:1;transform:translate3d(calc(-50% - var(--slide) - var(--slide)),10px,-200px) rotateY(35deg) scale(.7);opacity:0;pointer-events:none}
+.instrument[data-position="hidden-right"]{z-index:1;transform:translate3d(calc(-50% + var(--slide) + var(--slide)),10px,-200px) rotateY(-35deg) scale(.7);opacity:0;pointer-events:none}
+.instrument img{display:block;width:100%;height:calc(100% - 32px);object-fit:contain;pointer-events:none;filter:drop-shadow(0 20px 20px #0007)}
+.instrument-name{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);padding:8px 14px;border:1px solid #d5e5ee85;border-radius:999px;background:#111b25ed;color:#f7fbff;font-size:13px;font-weight:700;white-space:nowrap;letter-spacing:.02em;box-shadow:0 5px 22px #0007}
+.instrument[data-position="left"] .instrument-name{left:calc(50% + 65px)}
+.instrument[data-position="right"] .instrument-name{left:calc(50% - 65px)}
+.instrument[data-position="center"] .instrument-name,.instrument[data-position^="hidden"] .instrument-name{opacity:0}
+.instrument:focus-visible{outline:2px solid var(--ice);outline-offset:-5px;border-radius:24px}
+.details{position:relative;z-index:5;width:min(100%,410px);margin:-7px auto 0;text-align:center}
+.counter{margin:0;color:#b8c8d3;font-size:11px;font-weight:750;letter-spacing:.2em}
+.instrument-title{margin:8px 0 0;font-size:clamp(27px,4vw,39px);font-weight:630;letter-spacing:-.05em;line-height:1.1}
+.instrument-description{min-height:22px;margin:7px 0 0;color:var(--muted);font-size:13px;line-height:1.45}
+.primary{width:min(100%,300px);min-height:54px;margin:20px auto 0;padding:0 22px;border:1px solid #f8f8f4;border-radius:16px;background:#f5f4ee;color:#19222b;display:flex;align-items:center;justify-content:center;gap:14px;font-size:15px;font-weight:720;text-decoration:none;box-shadow:0 9px 34px #0004;transition:transform .18s ease,background .18s ease,box-shadow .18s ease}
+.primary:hover{transform:translateY(-2px);background:#fff;box-shadow:0 12px 36px #0007}
+.primary:active{transform:translateY(0)}
+.primary[aria-disabled="true"]{border-color:#ffffff32;background:#ffffff17;color:#b3bec8;box-shadow:none;cursor:default}
+.primary[aria-disabled="true"]:hover{transform:none}
+.primary-arrow{font-size:21px;font-weight:350;line-height:1}
+.navigation{width:min(100%,410px);margin:17px auto 0;display:flex;align-items:center;justify-content:center;gap:18px}
+.nav-arrow{width:44px;height:44px;border:1px solid var(--edge);border-radius:50%;background:#ffffff0d;color:#e2eaf0;font-size:21px;display:grid;place-items:center;cursor:pointer;transition:background .2s ease,border-color .2s ease}
+.nav-arrow:hover:not(:disabled){background:#ffffff23;border-color:#ffffff72}
+.nav-arrow:disabled{opacity:.3;cursor:default}
+.dots{display:flex;align-items:center}
+.dot{width:44px;height:44px;padding:0;border:0;border-radius:12px;background:transparent;display:grid;place-items:center;cursor:pointer;transition:background .18s ease}
+.dot::before{content:"";width:7px;height:7px;border-radius:50%;background:#ffffff6b;transition:width .22s ease,background .22s ease}
+.dot[aria-current="true"]::before{width:24px;border-radius:9px;background:#edf3f4}
+.dot:hover{background:#ffffff12}
+.dot:focus-visible,.nav-arrow:focus-visible,.primary:focus-visible{outline:2px solid var(--ice);outline-offset:4px}
+@media(max-width:600px){.shell{padding-top:max(18px,env(safe-area-inset-top))}.intro{margin-top:clamp(20px,4.5vh,34px)}.scene{margin-top:18px}.instrument{width:min(73%,300px)}.instrument img{height:calc(100% - 25px)}.instrument-name{bottom:0;padding:7px 12px;font-size:12px}.details{margin-top:-4px}.instrument-description{font-size:12px}.primary{margin-top:16px}.navigation{margin-top:15px}}
+@media(max-width:370px){.shell{padding-left:12px;padding-right:12px}.scene{height:clamp(305px,48dvh,420px)}.instrument{width:72%}.instrument-name{padding:6px 9px}.primary{min-height:50px}}
+@media(min-width:601px) and (max-height:900px){.intro{margin-top:20px}.scene{height:clamp(315px,43dvh,390px);margin-top:8px}.details{margin-top:-4px}.primary{margin-top:14px}.navigation{margin-top:11px}}
+@media(max-height:720px){.intro{margin-top:13px}.scene{height:clamp(290px,45dvh,390px)}.details{margin-top:-8px}.primary{margin-top:11px}.navigation{margin-top:10px}}
+@media(max-height:680px){.scene{height:255px}}
+.scene.is-dragging .instrument-name{opacity:0}
+@media(prefers-reduced-motion:reduce){.instrument,.primary,.nav-arrow,.dot,.dot::before{transition:none}}
 </style>
 </head>
-<body><a href="./studio/" aria-label="Відкрити інтерактивну скрипку"><img src="./violin-cover-v2.png" width="1536" height="1024" alt="" decoding="async" fetchpriority="high"></a></body>
+<body>
+<main class="shell">
+ <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span><span>Студія звуку</span></div>
+ <header class="intro">
+  <h1>Знайди свій звук</h1>
+ </header>
+ <section class="experience" aria-label="Вибір інструмента">
+  <div class="scene" id="scene" tabindex="0" role="group" aria-label="Гортай інструменти свайпом або клавішами зі стрілками" style="--slide:clamp(160px,45vw,300px)">
+   <div class="instrument" data-index="0" data-position="left" role="button" tabindex="0" aria-label="Обрати скрипку"><img src="./instruments/violin-photo-v1.webp" alt="" width="1024" height="1536" draggable="false"><span class="instrument-name">Скрипка</span></div>
+   <div class="instrument" data-index="1" data-position="center" role="button" tabindex="-1" aria-label="Гітара"><img src="./instruments/guitar-photo-v1.webp" alt="" width="1024" height="1536" fetchpriority="high" draggable="false"><span class="instrument-name">Гітара</span></div>
+   <div class="instrument" data-index="2" data-position="right" role="button" tabindex="0" aria-label="Обрати віолончель"><img src="./instruments/cello-photo-v1.webp" alt="" width="1024" height="1536" draggable="false"><span class="instrument-name">Віолончель</span></div>
+  </div>
+  <div class="details" aria-live="polite" aria-atomic="true">
+   <p class="counter" id="counter">02 / 03</p>
+   <h2 class="instrument-title" id="instrument-title">Гітара</h2>
+   <p class="instrument-description" id="instrument-description">Торкнися струн і зіграй перші акорди.</p>
+   <a class="primary" id="primary" href="./guitar/">Спробуй <span class="primary-arrow" aria-hidden="true">↗</span></a>
+  </div>
+  <nav class="navigation" aria-label="Перемикання інструментів">
+   <button class="nav-arrow" id="previous" type="button" aria-label="Попередній інструмент">←</button>
+   <div class="dots" aria-label="Обрати інструмент">
+    <button class="dot" type="button" data-go="0" aria-label="Скрипка" aria-current="false"></button>
+    <button class="dot" type="button" data-go="1" aria-label="Гітара" aria-current="true"></button>
+    <button class="dot" type="button" data-go="2" aria-label="Віолончель" aria-current="false"></button>
+   </div>
+   <button class="nav-arrow" id="next" type="button" aria-label="Наступний інструмент">→</button>
+  </nav>
+ </section>
+</main>
+<script>
+(()=>{
+ const items=[
+  {name:'Скрипка',description:'Проведи смичком і почуй кожну ноту.',href:'./studio/'},
+  {name:'Гітара',description:'Торкнися струн і зіграй перші акорди.',href:'./guitar/'},
+  {name:'Віолончель',description:'Скоро відкриємо цей інструмент.',href:null}
+ ];
+ const scene=document.getElementById('scene');
+ const cards=[...scene.querySelectorAll('.instrument')];
+ const dots=[...document.querySelectorAll('.dot')];
+ const title=document.getElementById('instrument-title');
+ const description=document.getElementById('instrument-description');
+ const counter=document.getElementById('counter');
+ const primary=document.getElementById('primary');
+ const previous=document.getElementById('previous');
+ const next=document.getElementById('next');
+ let active=1,startX=null,startY=null,startTime=0,pointerId=null,dragging=false,ignoreClick=false;
+ function show(index){
+  active=Math.max(0,Math.min(items.length-1,index));
+  const item=items[active];
+  cards.forEach((card,i)=>{
+   card.style.transform='';
+   card.style.opacity='';
+   card.style.zIndex='';
+   const difference=i-active;
+   card.dataset.position=difference===0?'center':difference===-1?'left':difference===1?'right':difference<0?'hidden-left':'hidden-right';
+   card.tabIndex=Math.abs(difference)===1?0:-1;
+   card.setAttribute('aria-hidden',Math.abs(difference)>1?'true':'false');
+  });
+  title.textContent=item.name;
+  description.textContent=item.description;
+  counter.textContent=String(active+1).padStart(2,'0')+' / 03';
+  primary.firstChild.textContent=item.href?'Спробуй ':'Незабаром ';
+  primary.querySelector('.primary-arrow').hidden=!item.href;
+  if(item.href){primary.href=item.href;primary.removeAttribute('aria-disabled');primary.setAttribute('aria-label','Спробуй: '+item.name.toLowerCase())}
+  else{primary.removeAttribute('href');primary.setAttribute('aria-disabled','true');primary.setAttribute('aria-label','Віолончель — незабаром')}
+  previous.disabled=active===0;
+  next.disabled=active===items.length-1;
+  dots.forEach((dot,i)=>dot.setAttribute('aria-current',i===active?'true':'false'));
+ }
+ previous.addEventListener('click',()=>show(active-1));
+ next.addEventListener('click',()=>show(active+1));
+ dots.forEach(dot=>dot.addEventListener('click',()=>show(Number(dot.dataset.go))));
+ scene.addEventListener('click',event=>{
+  if(ignoreClick){event.preventDefault();event.stopPropagation();ignoreClick=false}
+ },true);
+ cards.forEach(card=>{
+  card.addEventListener('click',()=>{
+   const index=Number(card.dataset.index);
+   if(index!==active)show(index);
+   else if(items[index].href)window.location.href=items[index].href;
+  });
+  card.addEventListener('keydown',event=>{
+   if(event.key==='Enter'||event.key===' '){event.preventDefault();show(Number(card.dataset.index))}
+  });
+ });
+ scene.addEventListener('keydown',event=>{
+  if(event.key==='ArrowLeft'||event.key==='ArrowRight'){
+   event.preventDefault();show(active+(event.key==='ArrowLeft'?-1:1));
+  }
+ });
+ const anchors=[
+  {x:-2,y:10,z:-200,angle:35,scale:.7,opacity:0},
+  {x:-1,y:10,z:-90,angle:24,scale:.88,opacity:.84},
+  {x:0,y:0,z:95,angle:0,scale:1,opacity:1},
+  {x:1,y:10,z:-90,angle:-24,scale:.88,opacity:.84},
+  {x:2,y:10,z:-200,angle:-35,scale:.7,opacity:0}
+ ];
+ function slideWidth(){return Math.min(300,Math.max(160,window.innerWidth*.45))}
+ function drawDrag(dx){
+  const slide=slideWidth();
+  const edgePull=(active===0&&dx>0)||(active===items.length-1&&dx<0);
+  const limited=edgePull?Math.max(-slide*.18,Math.min(slide*.18,dx*.22)):Math.max(-slide*1.1,Math.min(slide*1.1,dx));
+  const progress=-limited/slide;
+  cards.forEach((card,i)=>{
+   const position=Math.max(-2,Math.min(2,i-active-progress));
+   const lower=Math.min(3,Math.floor(position+2));
+   const mix=position+2-lower;
+   const first=anchors[lower],second=anchors[lower+1];
+   const value=key=>first[key]+(second[key]-first[key])*mix;
+   card.style.transform=`translate3d(calc(-50% + ${value('x')*slide}px),${value('y')}px,${value('z')}px) rotateY(${value('angle')}deg) scale(${value('scale')})`;
+   card.style.opacity=String(value('opacity'));
+   card.style.zIndex=String(10-Math.round(Math.abs(position)*2));
+  });
+ }
+ scene.addEventListener('pointerdown',event=>{
+  if(startX!==null||(event.pointerType==='mouse'&&event.button!==0))return;
+  startX=event.clientX;startY=event.clientY;startTime=performance.now();pointerId=event.pointerId;
+ });
+ scene.addEventListener('pointermove',event=>{
+  if(event.pointerId!==pointerId)return;
+  const dx=event.clientX-startX,dy=event.clientY-startY;
+  if(!dragging){
+   if(Math.abs(dx)<6||Math.abs(dx)<Math.abs(dy)*1.2)return;
+   dragging=true;scene.classList.add('is-dragging');
+   if(event.pointerType!=='touch')scene.setPointerCapture?.(event.pointerId);
+  }
+  drawDrag(dx);
+ });
+ function endDrag(event,cancelled=false){
+  if(event.pointerId!==pointerId)return;
+  const dx=event.clientX-startX,dy=event.clientY-startY;
+  if(!dragging&&!cancelled&&Math.abs(dx)>6&&Math.abs(dx)>Math.abs(dy)*1.2){
+   dragging=true;scene.classList.add('is-dragging');
+  }
+  if(dragging){
+   if(!cancelled)drawDrag(dx);
+   scene.classList.remove('is-dragging');
+   cards[0].getBoundingClientRect();
+   const distance=Math.abs(dx),duration=performance.now()-startTime;
+   const advance=!cancelled&&Math.abs(dx)>Math.abs(dy)*1.2&&(distance>Math.min(48,slideWidth()*.24)||(distance>20&&distance/Math.max(1,duration)>.45));
+   show(active+(advance?(dx<0?1:-1):0));
+   ignoreClick=true;setTimeout(()=>ignoreClick=false,350);
+  }
+  startX=startY=pointerId=null;dragging=false;
+ }
+ scene.addEventListener('pointerup',endDrag);
+ scene.addEventListener('pointercancel',event=>endDrag(event,true));
+ scene.addEventListener('lostpointercapture',event=>endDrag(event,true));
+ show(1);
+})();
+</script>
+</body>
 </html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#111714">
+<title>Гітара — грай на весь екран</title>
+<style>
+:root{color-scheme:dark;--accent:#c5e59b;--view-w:100vw;--view-h:100vh;--ink:#f1f0e7;--dim:#aab9a3;--line:#ffffff1c}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111714;color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}button,input{font:inherit}button{color:inherit;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}button:focus-visible,input:focus-visible,canvas:focus-visible{outline:2px solid var(--accent);outline-offset:2px}button:active{filter:brightness(1.2)}[hidden]{display:none!important}svg{display:block;flex-shrink:0}.app{position:fixed;top:0;left:0;width:var(--view-w);height:var(--view-h);padding:6px;display:flex;flex-direction:column;gap:5px;overflow:hidden;background:radial-gradient(ellipse at 80% 20%,#30432533,transparent 75%),#111714;transform-origin:0 0}.portrait .app{left:100%;transform:rotate(90deg)}.topbar{flex:0 0 36px;display:flex;align-items:center;gap:9px;min-width:0}.brand{font-size:15px;font-weight:650;letter-spacing:-.5px;padding:0 5px;white-space:nowrap}.instruments{margin:auto;display:flex;gap:3px;border:1px solid var(--line);border-radius:10px;background:#080e0a;padding:3px}.instrument-button{min-height:31px;padding:5px 14px;border:0;border-radius:7px;background:transparent;color:var(--dim);font-size:12px;font-weight:600}.instrument-button[aria-pressed=true]{background:var(--accent);color:#1d2a16}.icon-button,.sound-toggle{display:flex;align-items:center;justify-content:center;border:1px solid var(--line);background:#1d291f;width:36px;height:36px;border-radius:9px;color:var(--accent);flex-shrink:0}.sound-toggle[data-muted=true]{color:#e4ac90}.workbench{flex:1;min-height:0;display:grid;grid-template-columns:106px minmax(0,1fr);gap:7px}.chord-panel{padding:5px;background:#1d271f;border:1px solid var(--line);border-radius:12px;display:flex;min-height:0}.chord-buttons{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:repeat(5,minmax(0,1fr));gap:5px;width:100%;min-height:0}.chord-button{border:1px solid #ffffff16;background:#2a372c;border-radius:9px;min-height:0;display:flex;align-items:center;justify-content:center;position:relative}.chord-symbol{font-size:22px;font-weight:650;letter-spacing:-.6px}.chord-key{display:none}.chord-button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#1c2916;box-shadow:0 0 20px #c5e59b13}.chord-button[aria-pressed=true]:after{content:"";position:absolute;top:5px;right:5px;width:3px;height:3px;border-radius:50%;background:#3c562d}.instrument-shell{min-width:0;min-height:0;position:relative;overflow:hidden;border:1px solid var(--line);border-radius:12px;background:radial-gradient(ellipse at 75% 45%,#354126,#1b251c 70%)}.canvas-wrap{position:absolute;inset:0;touch-action:none}.guitar-canvas{width:100%;height:100%;display:block;touch-action:none;cursor:crosshair;-webkit-user-select:none;user-select:none;outline-offset:-3px!important}.stage-head{position:absolute;top:0;left:0;right:0;height:36px;display:flex;align-items:center;justify-content:space-between;padding:3px 13px;pointer-events:none;z-index:2}.current-chord{display:flex;align-items:center;gap:9px}.current-symbol{font-size:27px;font-weight:650;letter-spacing:-1px;color:var(--accent);min-width:41px;line-height:1}.current-name{font-size:10px;font-weight:600}.current-notes{font-size:9px;color:var(--dim);line-height:1.2;margin-top:2px}.timbre-tag{font-size:9px;color:var(--dim);letter-spacing:.8px;text-transform:uppercase}.play-labels{position:absolute;right:18px;top:38px;color:#d1dbbd;font-size:9px;letter-spacing:.7px;pointer-events:none}.play-labels span:first-child{display:none}.canvas-instruction,.stage-bottom{display:none}.playbar{flex:0 0 46px;display:flex;align-items:center;gap:7px;min-width:0}.play-button{min-height:42px;min-width:111px;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 13px;border:0;border-radius:10px;background:var(--accent);color:#1d2a16;font-size:12px;font-weight:650}.play-button[data-playing=true]{background:#2f412c;color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}.sequence-block{flex:1;min-width:0;display:flex;align-items:center;gap:8px}.meter-label{font-size:9px;color:var(--dim);width:38px;line-height:1.4;text-align:center;flex-shrink:0}.sequence{display:flex;gap:4px;flex:1;min-width:0}.step{flex:1;min-width:0;text-align:center;border:1px solid #ffffff14;border-radius:7px;background:#1b281d;padding:2px 0}.stroke{display:block;font-size:20px;line-height:1.1;color:#cad5be}.count{display:block;font-size:8px;line-height:1;color:#8a9f7d;margin:3px 0}.step.rest .stroke{color:#66785c}.step.active{background:#c5e59b29;border-color:var(--accent)}.step.active .stroke,.step.active .count{color:var(--accent)}.small-button{min-height:40px;border:1px solid var(--line);background:#263428;border-radius:9px;font-size:11px;padding:7px 12px;white-space:nowrap;display:flex;gap:6px;align-items:center;justify-content:center}.small-button strong{font-weight:600;color:var(--accent)}.damp-button{width:39px;min-height:40px;background:#2a2620;border:1px solid #e2c89833;border-radius:9px;display:grid;place-items:center;font-size:19px;color:#e3c593}.rhythm-panel{position:absolute;right:9px;bottom:64px;width:min(500px,calc(100% - 20px));max-height:calc(100% - 78px);overflow:auto;z-index:8;padding:15px;background:#1d2a20;border:1px solid #829569;border-radius:14px;box-shadow:0 15px 70px #000b;overscroll-behavior:contain}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:9px;margin-bottom:12px}.section-heading h2{font-size:15px;margin:0;font-weight:600}.drawer-close{width:30px;height:30px;border:0;background:#354333;border-radius:7px;color:var(--accent);font-size:20px}.rhythm-tabs{display:flex;background:#101911;border-radius:9px;padding:3px;gap:2px}.rhythm-tab{border:0;background:transparent;color:var(--dim);padding:7px 12px;border-radius:6px;font-size:11px}.rhythm-tab[aria-pressed=true]{background:#44573a;color:var(--accent)}.pattern-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.pattern-button{background:#17231a;border:1px solid var(--line);border-radius:9px;padding:11px 8px;text-align:left;min-height:65px;min-width:0}.pattern-button[aria-pressed=true]{border-color:var(--accent);background:#c5e59b10}.pattern-name{display:block;font-size:12px;font-weight:600;margin-bottom:9px}.pattern-glyphs{display:block;font-size:14px;letter-spacing:.3px;color:var(--accent);white-space:nowrap}.pattern-desc{color:var(--dim);font-size:11px;line-height:1.5;margin:10px 0 12px}.drawer-sliders{display:flex;gap:22px;align-items:center}.tempo-control,.volume-control{flex:1;min-width:0}.tempo-control label,.volume-control label{font-size:11px;display:flex;justify-content:space-between;margin-bottom:6px;color:var(--dim)}.tempo-control output{color:var(--ink);font-variant-numeric:tabular-nums}.drawer-sliders input{width:100%;margin:0;accent-color:var(--accent);height:20px;cursor:pointer}.help-button{display:block;margin-top:12px;border:0;background:transparent;color:var(--dim);padding:6px 0;text-decoration:underline;text-underline-offset:3px;font-size:10px}.audio-gate{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;z-index:15;background:#10170ed9;padding:20px;text-align:center}.audio-gate h1{margin:0;font-size:25px;font-weight:600;letter-spacing:-.6px}.audio-gate p{color:#bfd0b1;font-size:12px;line-height:1.5;margin:0;max-width:440px}.start-audio{display:flex;align-items:center;justify-content:center;gap:11px;min-height:63px;min-width:285px;border:1px solid #e1f8bf;border-radius:15px;background:var(--accent);color:#1f3015;font-size:19px;font-weight:700;box-shadow:0 5px 45px #c5e59b22}.gate-hint{font-size:11px!important;color:#96aa88!important}.audio-gate .gate-error{color:#f3c2a3;font-size:12px;max-width:480px}.toast{position:absolute;bottom:68px;left:50%;transform:translateX(-50%);padding:9px 16px;border:1px solid #a7c48766;background:#22331fee;border-radius:10px;font-size:12px;max-width:80%;text-align:center;z-index:19;pointer-events:none;opacity:0}.toast.show{opacity:1}.help-dialog{position:absolute;inset:15px;max-width:570px;width:calc(100% - 30px);max-height:calc(var(--view-h) - 30px);margin:auto;overflow:auto;background:#1d2a20;border:1px solid #829569;border-radius:16px;padding:18px;color:var(--ink);font-size:12px}.help-dialog::backdrop{background:#000b}.help-dialog h2{font-size:19px;margin:0 0 12px}.help-dialog p{line-height:1.55;margin:10px 0;color:#c4d1bd}.help-dialog b{color:var(--ink)}.close-help{width:100%;border:0;background:var(--accent);color:#1d2b15;padding:11px;border-radius:9px;margin-top:6px;font-weight:650}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}.noscript{position:fixed;inset:0;z-index:100;background:#162118;color:#f1f0e7;padding:30px;display:grid;place-content:center;font-size:18px;line-height:1.5}
+body[data-instrument=electric]{--accent:#b3d8e7}body[data-instrument=bass]{--accent:#edc599}body[data-instrument=electric] .instrument-shell{background:radial-gradient(ellipse at 75% 45%,#25424a,#172429 70%)}body[data-instrument=bass] .instrument-shell{background:radial-gradient(ellipse at 75% 45%,#4c3522,#252319 70%)}
+@media(min-aspect-ratio:1/1) and (min-width:1000px){.app{padding:15px;gap:10px}.topbar{flex-basis:48px}.brand{font-size:19px}.instrument-button{font-size:14px;min-height:37px;padding:6px 20px}.workbench{grid-template-columns:132px minmax(0,1fr);gap:12px}.chord-panel{padding:8px}.chord-buttons{gap:8px}.chord-symbol{font-size:29px}.playbar{flex-basis:60px;gap:12px}.play-button{min-height:49px;min-width:145px;font-size:14px}.small-button,.damp-button{min-height:48px}.small-button{font-size:13px}.step{padding:4px 0}.stroke{font-size:25px}.count{font-size:10px}.meter-label{font-size:11px;width:50px}.stage-head{height:49px;padding:5px 19px}.current-symbol{font-size:37px}.current-name{font-size:13px}.current-notes{font-size:11px}.play-labels{top:55px;font-size:10px}.rhythm-panel{bottom:87px}}
+@media(max-height:330px) and (min-aspect-ratio:1/1){.app{padding:5px;gap:4px}.topbar{flex-basis:33px}.instrument-button{min-height:27px}.icon-button,.sound-toggle{height:30px;width:30px}.playbar{flex-basis:40px}.workbench{grid-template-columns:87px minmax(0,1fr)}.chord-buttons{gap:3px}.chord-symbol{font-size:18px}.play-button,.small-button,.damp-button{min-height:34px}.stroke{font-size:17px}.count{font-size:7px}.timbre-tag{display:none}.play-labels{display:none}.stage-head{height:30px}.current-symbol{font-size:24px}.rhythm-panel{bottom:50px}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body data-instrument="acoustic">
+<main class="app" id="app">
+ <header class="topbar"><div class="brand">Гітара</div><div class="instruments" role="group" aria-label="Інструмент"><button class="instrument-button" data-instrument="acoustic" aria-pressed="true">Акустична</button><button class="instrument-button" data-instrument="electric" aria-pressed="false">Електро</button><button class="instrument-button" data-instrument="bass" aria-pressed="false">Бас</button></div><button class="sound-toggle" id="soundToggle" aria-label="Увімкнути звук" title="Звук"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path class="sound-waves" d="M15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><path class="sound-off" d="m16 9 6 6m0-6-6 6" stroke="currentColor" stroke-width="1.6" style="display:none"/></svg></button><button id="fullscreenButton" class="icon-button" aria-label="На весь екран" title="На весь екран"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 3H3v6m12-6h6v6M3 15v6h6m6 0h6v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></button></header>
+ <div class="workbench"><aside class="chord-panel" aria-label="Акорди"><span id="chordRailLabel" class="sr-only">Акорди</span><div class="chord-buttons" id="chordButtons"></div></aside><section class="instrument-shell" aria-label="Гітара на весь екран"><div class="canvas-wrap" id="canvasWrap"><canvas class="guitar-canvas" id="guitar" tabindex="0" role="application" aria-label="Проведи по струнах. Стрілки вгору та вниз — бій, Q W E R T Y — окремі струни."></canvas><div class="play-labels" aria-hidden="true"><span id="fretLabel">ПОЗИЦІЯ ПАЛЬЦІВ</span><span>↓ ПРОВЕДИ ПО СТРУНАХ ↑</span></div><div class="canvas-instruction" id="canvasInstruction"></div></div><div class="stage-head"><div class="current-chord"><div class="current-symbol" id="currentChord">Am</div><div><div class="current-name" id="chordName">Ля мінор</div><div class="current-notes" id="chordNotes">Ля · До · Мі</div></div></div><span class="timbre-tag" id="timbreTag">Тепла акустика</span></div><div class="stage-bottom"><div class="legend" id="legend"></div></div></section></div>
+ <footer class="playbar"><button class="play-button" id="playButton" data-playing="false" aria-pressed="false"><svg id="playIcon" width="12" height="12" viewBox="0 0 18 18" aria-hidden="true"><path d="m5 3 10 6-10 6V3Z" fill="currentColor"/></svg><span id="playLabel">Слухати</span></button><div class="sequence-block"><span id="sequenceLabel" class="sr-only">Схема ритму</span><span class="meter-label" id="meterLabel">4/4</span><div class="sequence" id="sequence" aria-label="Схема ритму"></div></div><button class="small-button" id="rhythmButton" aria-expanded="false" aria-controls="rhythmPanel"><span id="patternShort">Шістка</span><strong>⚙</strong></button><button class="damp-button" id="dampButton" aria-label="Приглушити струни" title="Приглушити всі струни">■</button></footer>
+ <section class="rhythm-panel" id="rhythmPanel" hidden aria-label="Вибір ритму і темпу"><div class="section-heading"><h2 id="rhythmTitle">Ритм</h2><div class="rhythm-tabs" role="group" aria-label="Тип ритму"><button class="rhythm-tab" data-kind="strum" aria-pressed="true" id="strumTab">Бій</button><button class="rhythm-tab" data-kind="pick" aria-pressed="false">Перебір</button></div><button id="closeRhythm" class="drawer-close" aria-label="Закрити налаштування">×</button></div><div class="pattern-options" id="patternOptions"></div><p class="pattern-desc" id="patternDescription"></p><div class="drawer-sliders"><div class="tempo-control"><label for="tempo">Темп <span><output id="tempoValue">84</output> ♩/хв</span></label><input id="tempo" type="range" min="40" max="160" step="1" value="84" aria-label="Темп"></div><div class="volume-control"><label for="volume">Гучність</label><input id="volume" type="range" min="0" max="100" value="80" aria-label="Гучність"></div></div><button class="help-button" id="helpButton">Як читати гриф і схему ритму</button></section>
+ <section class="audio-gate" id="audioGate" aria-label="Запуск гітари"><h1>Грай на весь екран</h1><p>Тримай телефон уздовж. Акорди — ліворуч, струни — праворуч.</p><button class="start-audio" id="startAudio"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m11 5-5 4H3v6h3l5 4V5Zm4 3a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg><span id="startAudioLabel">Увімкнути гітару</span></button><p class="gate-hint" id="audioGateStatus">Після натискання прозвучить акорд — і можна грати.</p></section>
+ <div class="toast" id="toast" role="status" aria-live="polite"></div><span id="audioStatus" class="sr-only">Звук не запущено</span><span id="accessibleStatus" class="sr-only" aria-live="polite"></span>
+ <dialog class="help-dialog" id="helpDialog"><h2>Акорд зліва. Рух по струнах справа.</h2><p><b>Ручна гра.</b> Проведи пальцем або затиснутою мишею поперек струн. Кожна зачеплена струна звучить окремо. Можна одним пальцем перемикати акорди, іншим — грати.</p><p><b>На грифі:</b> 1 — вказівний, 2 — середній, 3 — безіменний, 4 — мізинець. ○ — відкрита струна, × — заглушена. F має баре — вертикальну смужку.</p><p><b>Ритм.</b> Натисни кнопку з назвою ритму, обери бій або перебір і темп. «Слухати» повторює малюнок. Зміна акорду зберігає ритм. Дотик до струн повертає ручну гру. ■ приглушує звук.</p><p><b>Бас.</b> Чотири струни. Акордна кнопка вибирає ноти гармонії для басової лінії. Літери на грифі — ноти, Б — основний бас. У схемі перебору вказані фізичні номери струн.</p><p><b>Клавіатура:</b> 1–0 — акорди, ↑ ↓ — бій, Q W E R T Y — струни, пробіл — ритм, Esc — тиша.</p><button class="close-help" id="closeHelp">Грати</button></dialog>
+</main>
+<noscript><div class="noscript">Цей переглядач не запускає інтерактивний HTML. Завантаж Guitar_Studio.html і вибери «Відкрити у браузері», щоб грати зі звуком.</div></noscript>
+<script>
+/* Автономна фізична модель струн без зовнішніх семплів. */
+(function (global) {
+  'use strict';
+  const OUTPUT_BOOST = 1.7;
+  const PROFILES = {
+    acoustic: { triangle: .64, pulse: .33, noise: .18, pick: .18, decay: 5.6, duration: 5.25, level: .34, cutoff: 7300, damping: [.48,.46,.43,.38,.32,.28], sustain: [1.08,1.04,1,.94,.86,.8], balance: [.98,1,1.02,1.02,1.04,1.06] },
+    electric: { triangle: .34, pulse: .65, noise: .075, pick: .12, decay: 7.2, duration: 6.0, level: .38, cutoff: 4600, damping: [.4,.38,.35,.31,.27,.24], sustain: [1.08,1.04,1,.96,.9,.84], balance: [.98,1,1.02,1.02,1.04,1.06] },
+    bass: { triangle: .88, pulse: .16, noise: .045, pick: .24, decay: 6.4, duration: 5.7, level: .48, cutoff: 3200, damping: [.49,.46,.42,.38], sustain: [1.1,1.04,.98,.92], balance: [1.08,1.04,1,.98] }
+  };
+  class GuitarAudio {
+    constructor() {
+      this.ctx = null;
+      this._instrument = 'acoustic';
+      this._volume = .8;
+      this._cache = new Map();
+      this._voices = Array.from({ length: 6 }, () => new Set());
+      this._nodes = [];
+      this._graphReady = false;
+      this._gestureResume = null;
+      this.lastStartError = null;
+    }
+    get context() { return this.ctx; }
+    get currentTime() { return this.ctx ? this.ctx.currentTime : 0; }
+    get instrument() { return this._instrument; }
+    async ready() {
+      if (!this.ctx || this.ctx.state === 'closed') {
+        const AudioContext = global.AudioContext || global.webkitAudioContext;
+        if (!AudioContext) throw new Error('Web Audio is not supported by this browser.');
+        // Construct and request resume before the first await: retain user activation.
+        try { this.ctx = new AudioContext({ latencyHint: 'interactive' }); }
+        catch (_) { this.ctx = new AudioContext(); }
+        this._cache.clear();
+        this._graphReady = false;
+        try {
+          this._makeGraph();
+          this._graphReady = true;
+        } catch (error) {
+          // A partially built graph must never be reported as a ready instrument.
+          const failedContext = this.ctx;
+          this.ctx = null;
+          this.lastStartError = error;
+          try { const closing = failedContext.close(); if (closing && closing.catch) closing.catch(() => {}); } catch (_) {}
+          throw error;
+        }
+      }
+      this._installGestureResume();
+      const context = this.ctx;
+      if (context.state === 'running') { this.lastStartError = null; return this; }
+      // Do not reuse a previous pending resume promise. Touch pointerdown is not
+      // an activation event, so that request can remain pending indefinitely.
+      let request;
+      try { request = context.resume(); }
+      catch (error) { this.lastStartError = error; throw error; }
+      return new Promise((resolve, reject) => {
+        let finished = false;
+        const cleanup = () => {
+          global.clearTimeout(timer);
+          if (context.removeEventListener) context.removeEventListener('statechange', check);
+        };
+        const settle = error => {
+          if (finished) return;
+          finished = true;
+          cleanup();
+          this.lastStartError = error || null;
+          error ? reject(error) : resolve(this);
+        };
+        const check = () => {
+          if (context.state === 'running' && this.ctx === context && this._graphReady) settle();
+          else if (context.state === 'closed' || this.ctx !== context) settle(new Error('Audio context was closed.'));
+        };
+        const timer = global.setTimeout(() => {
+          if (context.state === 'running') { check(); return; }
+          const error = new Error('Audio is still blocked. Tap the sound button again.');
+          error.name = 'AudioStartError';
+          error.code = 'AUDIO_START_BLOCKED';
+          settle(error);
+        }, 2200);
+        if (context.addEventListener) context.addEventListener('statechange', check);
+        Promise.resolve(request).then(check, settle);
+        check();
+      });
+    }
+    _installGestureResume() {
+      if (this._gestureResume || !global.addEventListener) return;
+      this._gestureResume = event => {
+        const context = this.ctx;
+        if (!context || context.state === 'closed' || context.state === 'running') return;
+        if (event && event.isTrusted === false) return;
+        if (global.document && global.document.hidden) return;
+        // Runs directly in the real pointerup/touchend/click/keyboard event.
+        // It also recovers a context suspended by an OS audio interruption.
+        try {
+          const request = context.resume();
+          if (request && request.catch) request.catch(error => { this.lastStartError = error; });
+        } catch (error) { this.lastStartError = error; }
+      };
+      this._resumeEvents = ['pointerup', 'touchend', 'click', 'keydown'];
+      this._resumeEvents.forEach(type => global.addEventListener(type, this._gestureResume, { capture: true, passive: true }));
+    }
+    _makeGraph() {
+      const c = this.ctx;
+      this._input = c.createGain();
+      this._highpass = c.createBiquadFilter();
+      this._highpass.type = 'highpass'; this._highpass.Q.value = .7;
+      this._body = c.createBiquadFilter();
+      this._body.type = 'peaking'; this._body.frequency.value = 190; this._body.Q.value = .8;
+      this._presence = c.createBiquadFilter();
+      this._presence.type = 'peaking'; this._presence.frequency.value = 2300; this._presence.Q.value = .7;
+      this._lowpass = c.createBiquadFilter();
+      this._lowpass.type = 'lowpass'; this._lowpass.Q.value = .65;
+      this._compressor = c.createDynamicsCompressor();
+      this._compressor.threshold.value = -13; this._compressor.knee.value = 15;
+      this._compressor.ratio.value = 3.5; this._compressor.attack.value = .003; this._compressor.release.value = .16;
+      this._shape = c.createWaveShaper();
+      this._master = c.createGain(); this._master.gain.value = this._volume * OUTPUT_BOOST;
+      // Лінійне підсилення +70%; м'яке обмеження лише піків понад 0,85.
+      this._limiter = c.createWaveShaper();
+      const ceiling = new Float32Array(8193);
+      for (let i = 0; i < ceiling.length; i++) {
+        const x = i / (ceiling.length - 1) * 2 - 1, magnitude = Math.abs(x);
+        ceiling[i] = magnitude <= .85 ? x : Math.sign(x) * (.85 + .12 * Math.tanh((magnitude - .85) / .12));
+      }
+      this._limiter.curve = ceiling;
+      this._limiter.oversample = '2x';
+      this._nodes = [this._input, this._highpass, this._body, this._presence, this._lowpass, this._compressor, this._shape, this._master, this._limiter];
+      for (let i = 0; i < this._nodes.length - 1; i++) this._nodes[i].connect(this._nodes[i + 1]);
+      this._limiter.connect(c.destination);
+      this._applyProfile();
+    }
+    _applyProfile() {
+      if (!this.ctx) return;
+      const kind = this._instrument, p = PROFILES[kind], t = this.currentTime;
+      this._highpass.frequency.setTargetAtTime(kind === 'bass' ? 18 : 53, t, .018);
+      this._body.frequency.setTargetAtTime(kind === 'bass' ? 85 : 190, t, .018);
+      this._body.gain.setTargetAtTime(kind === 'acoustic' ? 2.5 : kind === 'bass' ? 3.5 : -.5, t, .018);
+      this._presence.frequency.setTargetAtTime(kind === 'bass' ? 850 : 2300, t, .018);
+      this._presence.gain.setTargetAtTime(kind === 'electric' ? 2 : kind === 'bass' ? -1.5 : .8, t, .018);
+      this._lowpass.frequency.setTargetAtTime(p.cutoff, t, .018);
+      const curve = new Float32Array(2049);
+      for (let i = 0; i < curve.length; i++) {
+        const x = i / (curve.length - 1) * 2 - 1;
+        curve[i] = kind === 'electric' ? .88 * Math.tanh(2.2 * x) : kind === 'bass' ? .97 * Math.tanh(1.05 * x) / 1.05 : .96 * (x - .075 * x * x * x);
+      }
+      this._shape.curve = curve;
+    }
+    setInstrument(value) {
+      if (!Object.prototype.hasOwnProperty.call(PROFILES, value)) value = 'acoustic';
+      if (value === this._instrument) return;
+      this.stopAll();
+      this._instrument = value;
+      this._applyProfile();
+    }
+    setVolume(value) {
+      this._volume = Math.max(0, Math.min(1, Number(value) || 0));
+      if (this.ctx) this._master.gain.setTargetAtTime(this._volume * OUTPUT_BOOST, this.currentTime, .018);
+    }
+    _buffer(midi, stringIndex) {
+      const key = this._instrument + ':' + midi + ':' + stringIndex;
+      if (this._cache.has(key)) {
+        const found = this._cache.get(key);
+        this._cache.delete(key); this._cache.set(key, found);
+        return found;
+      }
+      // Кожна струна має власне затухання; фазову затримку фільтра
+      // компенсуємо на основній частоті, щоб тембр не змінював ноту.
+      const sampleRate = Math.min(32000, this.ctx.sampleRate);
+      const p = PROFILES[this._instrument];
+      stringIndex = Math.min(stringIndex, p.damping.length - 1);
+      const frequency = 440 * Math.pow(2, (midi - 69) / 12);
+      const period = sampleRate / frequency;
+      const omega = 2 * Math.PI * frequency / sampleRate;
+      const damping = p.damping[stringIndex];
+      const filterReal = 1 - damping + damping * Math.cos(omega);
+      const filterImag = damping * Math.sin(omega);
+      const filterDelay = Math.atan2(filterImag, filterReal) / omega;
+      const delay = Math.max(2, Math.floor(period - filterDelay));
+      const fraction = period - filterDelay - delay;
+      const fractionalRatio = Math.tan(omega * fraction / 2) / Math.tan(omega / 2);
+      const allpass = (1 - fractionalRatio) / (1 + fractionalRatio);
+      const ring = new Float64Array(delay);
+      const frames = Math.ceil(p.duration * sampleRate);
+      const buffer = this.ctx.createBuffer(1, frames, sampleRate);
+      const data = buffer.getChannelData(0);
+      let seed = ((midi + 3) * 747796405 + stringIndex * 2891336453 + this._instrument.length * 277803737) >>> 0;
+      const random = () => { seed ^= seed << 13; seed ^= seed >>> 17; seed ^= seed << 5; return (seed >>> 0) / 2147483648 - 1; };
+      const pick = p.pick + stringIndex * .009;
+      let mean = 0, smoothedNoise = 0;
+      for (let i = 0; i < delay; i++) {
+        const phase = i / delay;
+        const triangle = 2 * (phase < pick ? phase / pick : (1 - phase) / (1 - pick)) - 1;
+        const pulse = phase < pick ? 1 - pick : -pick;
+        smoothedNoise = smoothedNoise * .35 + random() * .65;
+        const value = p.triangle * triangle + p.pulse * pulse + p.noise * smoothedNoise;
+        ring[i] = value; mean += value;
+      }
+      mean /= delay;
+      for (let i = 0; i < delay; i++) ring[i] -= mean;
+      const t60 = p.decay * p.sustain[stringIndex] * Math.pow(110 / frequency, .10);
+      const feedback = Math.min(.999999, Math.exp(-6.907755 / (frequency * t60)) / Math.hypot(filterReal, filterImag));
+      let pos = 0, lastRead = 0, lastFiltered = 0, lastAllpass = 0, dcIn = 0, dcOut = 0, peak = 0;
+      const attackFrames = Math.max(8, Math.round(sampleRate * .0009));
+      const fadeFrames = Math.round(sampleRate * .18);
+      const dcPole = Math.exp(-2 * Math.PI * 5 / sampleRate);
+      for (let i = 0; i < frames; i++) {
+        const read = ring[pos];
+        const filtered = (1 - damping) * read + damping * lastRead;
+        const delayed = allpass * filtered + lastFiltered - allpass * lastAllpass;
+        ring[pos] = delayed * feedback;
+        lastRead = read; lastFiltered = filtered; lastAllpass = delayed;
+        if (++pos === delay) pos = 0;
+        // Зріз постійної складової на 5 Гц зберігає низьку E1 баса.
+        const blocked = read - dcIn + dcPole * dcOut;
+        dcIn = read; dcOut = blocked;
+        let value = blocked;
+        if (i < attackFrames) value *= .5 - .5 * Math.cos(Math.PI * i / attackFrames);
+        if (i > frames - fadeFrames) value *= .5 - .5 * Math.cos(Math.PI * (frames - 1 - i) / fadeFrames);
+        data[i] = value;
+        peak = Math.max(peak, Math.abs(value));
+      }
+      const scale = peak > 0 ? .86 / peak : 1;
+      for (let i = 0; i < frames; i++) data[i] *= scale;
+      this._cache.set(key, buffer);
+      // LRU bound keeps the three-instrument app modest on older phones.
+      while (this._cache.size > 36) this._cache.delete(this._cache.keys().next().value);
+      return buffer;
+    }
+    pluck({ midi, stringIndex = 0, velocity = .7, when } = {}) {
+      if (!this.ctx || this.ctx.state === 'closed' || !Number.isFinite(Number(midi))) return null;
+      midi = Math.max(20, Math.min(100, Number(midi)));
+      stringIndex = Math.max(0, Math.min(5, Math.floor(Number(stringIndex) || 0)));
+      velocity = Math.max(0, Math.min(1, Number(velocity) || 0));
+      if (!velocity) return null;
+      const buffer = this._buffer(midi, stringIndex);
+      const start = Math.max(this.currentTime + .001, Number.isFinite(when) ? when : this.currentTime + .001);
+      this.muteString(stringIndex, start);
+      const source = this.ctx.createBufferSource(); source.buffer = buffer;
+      const gain = this.ctx.createGain();
+      const profile = PROFILES[this._instrument];
+      const level = profile.level * profile.balance[Math.min(stringIndex, profile.balance.length - 1)] * Math.pow(velocity, 1.28);
+      gain.gain.setValueAtTime(level, start);
+      source.connect(gain);
+      let pan = null;
+      if (this.ctx.createStereoPanner) {
+        pan = this.ctx.createStereoPanner(); pan.pan.value = (stringIndex - (profile.balance.length - 1) / 2) * .035;
+        gain.connect(pan); pan.connect(this._input);
+      } else gain.connect(this._input);
+      const voice = { source, gain, pan, start, level, releaseAt: Infinity };
+      this._voices[stringIndex].add(voice);
+      source.onended = () => {
+        this._voices[stringIndex].delete(voice);
+        try { source.disconnect(); gain.disconnect(); if (pan) pan.disconnect(); } catch (_) {}
+      };
+      source.start(start);
+      return voice;
+    }
+    _release(voice, time) {
+      const t = Math.max(this.currentTime, time);
+      if (voice.releaseAt <= t) return;
+      voice.releaseAt = t;
+      try {
+        const param = voice.gain.gain;
+        param.cancelScheduledValues(t);
+        if (t <= voice.start) {
+          param.setValueAtTime(0, t);
+          voice.source.stop(t + .001);
+        } else {
+          param.setValueAtTime(voice.level, t);
+          param.linearRampToValueAtTime(0, t + .022);
+          voice.source.stop(t + .026);
+        }
+      } catch (_) { /* The source may already have ended. */ }
+    }
+    muteString(index, when) {
+      if (!this.ctx) return;
+      index = Math.max(0, Math.min(5, Math.floor(Number(index) || 0)));
+      const t = Math.max(this.currentTime, Number.isFinite(when) ? when : this.currentTime);
+      this._voices[index].forEach(voice => this._release(voice, t));
+    }
+    stopAll() {
+      if (!this.ctx) return;
+      const t = this.currentTime;
+      this._voices.forEach(group => group.forEach(voice => this._release(voice, t)));
+    }
+    async destroy() {
+      this.stopAll();
+      this._cache.clear();
+      if (this._gestureResume && global.removeEventListener) {
+        this._resumeEvents.forEach(type => global.removeEventListener(type, this._gestureResume, true));
+      }
+      this._gestureResume = null;
+      this._graphReady = false;
+      if (this.ctx && this.ctx.state !== 'closed') await this.ctx.close();
+      this.ctx = null;
+      this._voices.forEach(group => group.clear());
+      this._nodes = [];
+    }
+  }
+  global.GuitarAudio = GuitarAudio;
+})(typeof window !== 'undefined' ? window : globalThis);
+
+</script>
+<script>
+
+/* Self-contained interactive guitar; all music and drawing data are local. */
+(function(){
+'use strict';
+const $=id=>document.getElementById(id);
+const CHORDS=[
+ {id:'Am',name:'Ля мінор',notes:'Ля · До · Мі',frets:[-1,0,2,2,1,0],fingers:[0,0,2,3,1,0],root:9,bass:1},
+ {id:'C',name:'До мажор',notes:'До · Мі · Соль',frets:[-1,3,2,0,1,0],fingers:[0,3,2,0,1,0],root:0,bass:1},
+ {id:'D',name:'Ре мажор',notes:'Ре · Фа♯ · Ля',frets:[-1,-1,0,2,3,2],fingers:[0,0,0,1,3,2],root:2,bass:2},
+ {id:'Dm',name:'Ре мінор',notes:'Ре · Фа · Ля',frets:[-1,-1,0,2,3,1],fingers:[0,0,0,2,3,1],root:2,bass:2},
+ {id:'E',name:'Мі мажор',notes:'Мі · Соль♯ · Сі',frets:[0,2,2,1,0,0],fingers:[0,2,3,1,0,0],root:4,bass:0},
+ {id:'Em',name:'Мі мінор',notes:'Мі · Соль · Сі',frets:[0,2,2,0,0,0],fingers:[0,2,3,0,0,0],root:4,bass:0},
+ {id:'G',name:'Соль мажор',notes:'Соль · Сі · Ре',frets:[3,2,0,0,0,3],fingers:[2,1,0,0,0,3],root:7,bass:0},
+ {id:'A',name:'Ля мажор',notes:'Ля · До♯ · Мі',frets:[-1,0,2,2,2,0],fingers:[0,0,1,2,3,0],root:9,bass:1},
+ {id:'F',name:'Фа мажор',notes:'Фа · Ля · До',frets:[1,3,3,2,1,1],fingers:[1,3,4,2,1,1],root:5,bass:0,barre:1},
+ {id:'D7',name:'Ре септакорд',notes:'Ре · Фа♯ · Ля · До',frets:[-1,-1,0,2,1,2],fingers:[0,0,0,2,1,3],root:2,bass:2}
+];
+const INSTRUMENTS={acoustic:{tag:'Тепла акустика',tuning:[40,45,50,55,59,64],letters:['E','A','D','G','B','e'],accent:'#c5e59b'},electric:{tag:'М’який електричний драйв',tuning:[40,45,50,55,59,64],letters:['E','A','D','G','B','e'],accent:'#b3d8e7'},bass:{tag:'Глибокий бас',tuning:[28,33,38,43],letters:['E','A','D','G'],accent:'#edc599'}};
+/* Bass dots are independent chord-tone locations, not a simultaneous chord grip. */
+const BASS_VOICINGS={Am:[5,3,2,2],C:[3,3,2,0],D:[2,0,0,2],Dm:[1,0,0,2],E:[0,2,2,1],Em:[0,2,2,0],G:[3,2,0,0],A:[5,4,2,2],F:[1,3,3,2],D7:[2,3,0,2]};
+const BASS_ROOT_INDEX={Am:0,C:1,D:2,Dm:2,E:0,Em:0,G:0,A:0,F:0,D7:2};
+const PATTERNS=[
+ {id:'strum4',kind:'strum',name:'Рівний',glyphs:'↓ ↓ ↓ ↓',meter:'4/4',division:.5,steps:['d',null,'d',null,'d',null,'d',null],desc:'Чотири рівні удари вниз. Між ударами поверни руку вгору без звуку.'},
+ {id:'strum6',kind:'strum',name:'Шістка',glyphs:'↓ ↓↑ ↑↓↑',meter:'4/4',division:.5,steps:['d',null,'d','u',null,'u','d','u'],desc:'Вниз · вниз-вгору · вгору-вниз-вгору. Крапки — паузи, рух руки триває.'},
+ {id:'strum8',kind:'strum',name:'Вісімка',glyphs:'↓↑ ↓↑ ↓↑ ↓↑',meter:'4/4',division:.5,steps:['d','u','d','u','d','u','d','u'],desc:'Рівні рухи вниз і вгору. Чотири пари ударів на один такт.'},
+ {id:'pick4',kind:'pick',name:'На чотири',glyphs:'Б·3·2·1',meter:'4/4',division:1,steps:['b',3,2,1],desc:'Бас, третя, друга, перша. «Б» — басова струна вибраного акорду.'},
+ {id:'pick6',kind:'pick',name:'На шість',glyphs:'Б32123',meter:'6/8',division:.5,steps:['b',3,2,1,2,3],desc:'Бас, третя, друга, перша, друга, третя. Шість рівних восьмих на такт.'},
+ {id:'pick8',kind:'pick',name:'На вісім',glyphs:'Б3231323',meter:'4/4',division:.5,steps:['b',3,2,3,1,3,2,3],desc:'Бас, третя, друга, третя, перша, третя, друга, третя. Рівний хвилеподібний перебір.'}
+];
+let saved={};try{saved=JSON.parse(localStorage.getItem('pocket-guitar-v1')||'{}')||{};}catch(e){}
+const state={chord:CHORDS.find(c=>c.id===saved.chord)||CHORDS[0],instrument:INSTRUMENTS[saved.instrument]?saved.instrument:'acoustic',pattern:PATTERNS.find(p=>p.id===saved.pattern)||PATTERNS[1],tempo:Number.isFinite(saved.tempo)?Math.min(160,Math.max(40,saved.tempo)):84,volume:Number.isFinite(saved.volume)?Math.min(100,Math.max(0,saved.volume)):72,muted:false,unlocked:false,manualStep:-1};
+const audio=new GuitarAudio();
+let toastTimer=0,frame=0,lastFrame=0,geometry=null,background=null,resizeFrame=0,inputEpoch=0,soundStartAttempt=0;
+const viewport={width:0,height:0,rotated:false};
+const canvas=$('guitar'),ctx=canvas.getContext('2d'),pointers=new Map(),vibrations=new Array(6).fill(null),visualEvents=[];
+const transport={running:false,starting:false,timer:0,step:0,nextTime:0,active:-1,token:0};
+const reduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function persist(){try{localStorage.setItem('pocket-guitar-v1',JSON.stringify({chord:state.chord.id,instrument:state.instrument,pattern:state.pattern.id,tempo:state.tempo,volume:state.volume}));}catch(e){}}
+function announce(message){$('accessibleStatus').textContent=message;}
+function toast(message){$('toast').textContent=message;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2800);}
+function frets(){return state.instrument==='bass'?BASS_VOICINGS[state.chord.id]:state.chord.frets;}
+function tuning(){return INSTRUMENTS[state.instrument].tuning;}
+function bassIndex(){return state.instrument==='bass'?BASS_ROOT_INDEX[state.chord.id]:state.chord.bass;}
+function noteLabel(midi){return ['C','C♯','D','D♯','E','F','F♯','G','G♯','A','A♯','B'][((midi%12)+12)%12];}
+function bassPickOrder(){const root=bassIndex();return [root,...tuning().map((_,i)=>i).filter(i=>i!==root)];}
+function stringIndex(step){if(step==='b')return bassIndex();return state.instrument==='bass'?bassPickOrder()[4-Number(step)]:tuning().length-Number(step);}
+function setAudioStatus(){const silent=state.muted||state.volume===0;$('audioStatus').textContent=!state.unlocked?'Звук — із першого дотику':silent?'Звук вимкнено':'Готова до гри';$('soundToggle').dataset.muted=String(silent);const label=!state.unlocked?'Увімкнути звук':silent?'Увімкнути звук':'Вимкнути звук';$('soundToggle').setAttribute('aria-label',label);$('soundToggle').title=label;$('soundToggle').querySelector('.sound-waves').style.display=silent?'none':'';$('soundToggle').querySelector('.sound-off').style.display=silent?'':'none';}
+function showAudioGate(message){
+ $('audioGate').hidden=false;
+ $('startAudioLabel').textContent='Увімкнути гітару';
+ $('startAudio').setAttribute('aria-busy','false');
+ $('audioGateStatus').textContent=message||'Торкнись кнопки: спочатку прозвучить акорд, потім можна грати.';
+}
+async function ensureAudio(){
+ try{
+  // Always call ready() now, in the actual gesture. Never cache a pending resume.
+  await audio.ready();
+  if(!audio.context||audio.context.state!=='running')throw new Error('Audio not running');
+  state.unlocked=true;
+  audio.setInstrument(state.instrument);
+  audio.setVolume(state.muted?0:state.volume/100);
+  setAudioStatus();return true;
+ }catch(error){
+  if(audio.context&&audio.context.state==='running'){state.unlocked=true;setAudioStatus();return true;}
+  state.unlocked=false;setAudioStatus();
+  showAudioGate(error&&error.code==='AUDIO_START_BLOCKED'?'Браузер ще не дозволив звук. Натисни «Увімкнути гітару» ще раз.':'Звук не запустився. Відкрий цей HTML у браузері й натисни кнопку знову.');
+  return false;
+ }
+}
+async function startAudio(){
+ const attempt=++soundStartAttempt,epoch=inputEpoch;
+ state.muted=false;state.volume=Math.max(65,state.volume);$('volume').value=state.volume;
+ audio.setVolume(state.volume/100);
+ $('startAudioLabel').textContent='Увімкнення…';$('startAudio').setAttribute('aria-busy','true');
+ const ok=await ensureAudio();
+ if(attempt!==soundStartAttempt)return;
+ $('startAudio').setAttribute('aria-busy','false');$('startAudioLabel').textContent='Увімкнути гітару';
+ if(epoch!==inputEpoch||document.hidden)return;
+ if(ok&&audio.context.state==='running'){
+  $('audioGate').hidden=true;state.unlocked=true;setAudioStatus();
+  audio.stopAll();strum('d',audio.currentTime+.025,.9);persist();
+ }
+}
+function afterReady(action){
+ if(audio.context&&audio.context.state==='running'){action();return true;}
+ showAudioGate('Торкнись кнопки, щоб відновити звук.');return false;
+}
+function queueVisual(index,when,velocity){visualEvents.push({kind:'string',index,time:when,velocity});wake();}
+function pluck(index,when,velocity=.7){const f=frets(),base=tuning();if(index<0||index>=base.length||f[index]<0)return false;const at=when===undefined?audio.currentTime:when;audio.pluck({midi:base[index]+f[index],stringIndex:index,velocity,when:at});queueVisual(index,at,velocity);return true;}
+function strum(direction,when,velocity=.72){const indices=tuning().map((_,i)=>i).filter(i=>frets()[i]>=0);if(direction==='u')indices.reverse();const gap=direction==='u'?.013:.018;indices.forEach((i,n)=>pluck(i,when+n*gap,velocity*(direction==='u'?.77:1)*(1-.035*n)));}
+function stopTransport(silence=true){inputEpoch++;transport.token++;transport.starting=false;transport.running=false;clearInterval(transport.timer);transport.timer=0;visualEvents.length=0;transport.active=-1;updateStep(-1);$('playLabel').textContent='Слухати';$('playButton').dataset.playing='false';$('playButton').setAttribute('aria-pressed','false');$('playIcon').innerHTML='<path d="m5 3 10 6-10 6V3Z" fill="currentColor"/>';if(silence)audio.stopAll();wake();}
+function bassRhythmIndex(stepIndex){const root=bassIndex();if(state.pattern.id==='strum4')return root;const f=frets(),tt=tuning();const fifth=(state.chord.root+7)%12;const fi=f.findIndex((n,i)=>n>=0&&(tt[i]+n)%12===fifth);if(state.pattern.id==='strum8')return stepIndex%4>=2?(fi<0?root:fi):root;return [0,2,6].includes(stepIndex)?root:(fi<0?root:fi);}
+function scheduleTick(){if(!transport.running)return;const now=audio.currentTime;let guard=0;while(transport.nextTime<now+.065&&guard++<24){if(transport.nextTime<now-.12)transport.nextTime=now+.01;const p=state.pattern,k=transport.step,s=p.steps[k],t=transport.nextTime;visualEvents.push({kind:'step',step:k,time:t});if(s!==null){if(p.kind==='strum'){if(state.instrument==='bass')pluck(bassRhythmIndex(k),t,k===0?.85:.67);else strum(s,t,k===0?.82:.68);}else pluck(stringIndex(s),t,k===0?.84:.7);}transport.step=(k+1)%p.steps.length;transport.nextTime+=60/state.tempo*p.division;}wake();}
+async function toggleTransport(){if(transport.running||transport.starting){stopTransport();return;}transport.starting=true;const token=++transport.token;const ok=await ensureAudio();if(!ok||token!==transport.token){transport.starting=false;return;}audio.stopAll();pointers.clear();visualEvents.length=0;state.manualStep=-1;transport.starting=false;transport.running=true;transport.step=0;transport.nextTime=audio.currentTime+.045;$('playLabel').textContent='Зупинити';$('playButton').dataset.playing='true';$('playButton').setAttribute('aria-pressed','true');$('playIcon').innerHTML='<path d="M4 4h10v10H4z" fill="currentColor"/>';scheduleTick();transport.timer=setInterval(scheduleTick,25);}
+function restartTransport(){if(!transport.running)return;audio.stopAll();visualEvents.length=0;transport.step=0;transport.nextTime=audio.currentTime+.04;scheduleTick();}
+function changeChord(c){if(c===state.chord)return;inputEpoch++;const active=transport.active;const pending=transport.running?visualEvents.filter(e=>e.kind==='step'&&e.time>audio.currentTime+.002).sort((a,b)=>a.time-b.time)[0]:null;state.chord=c;state.manualStep=-1;audio.stopAll();visualEvents.length=0;vibrations.fill(null);renderChord();renderPatterns();if(transport.running){if(pending){transport.step=pending.step;transport.nextTime=pending.time;}updateStep(active);scheduleTick();}persist();announce(c.name);wake();}
+function changeInstrument(id){if(id===state.instrument)return;stopTransport();pointers.clear();vibrations.fill(null);state.instrument=id;state.manualStep=-1;audio.setInstrument(id);document.body.dataset.instrument=id;document.querySelectorAll('.instrument-button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.instrument===id)));renderChord();renderPatterns();resize();persist();announce(id==='bass'?'Бас-гітара, чотири струни':id==='electric'?'Електрогітара, шість струн':'Акустична гітара, шість струн');}
+function renderChord(){const c=state.chord,isBass=state.instrument==='bass';$('currentChord').textContent=c.id;$('chordName').textContent=c.name;$('chordNotes').textContent=c.notes+(isBass?' · басові ноти':'');$('timbreTag').textContent=INSTRUMENTS[state.instrument].tag;$('chordRailLabel').textContent=isBass?'Гармонія':'Акорди';$('fretLabel').textContent=isBass?'НОТИ НА ГРИФІ':'ПОЗИЦІЯ ПАЛЬЦІВ';$('strumTab').textContent=isBass?'Бас-ритм':'Бій';$('legend').innerHTML=isBass?'<span><b>Б</b> основна басова</span><span><b>Літери</b> ноти</span><span><b>○</b> відкрита</span>':'<span><b>1–4</b> пальці</span><span><b>○</b> відкрита</span><span><b>×</b> не граємо</span>';$('canvasInstruction').textContent=isBass?'Торкайся струн: басові ноти вибраної гармонії':'Вниз ↓   вгору ↑   або по одній струні';canvas.setAttribute('aria-label',(isBass?'Бас-гітара, чотири струни. ':'Гітара, шість струн. ')+c.name+'. Проведіть по струнах або натискайте клавіші Q W E R'+(isBass?'':' T Y')+'.');document.querySelectorAll('.chord-button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.chord===c.id)));wake();}
+function patternGlyphs(p){if(state.instrument==='bass'&&p.kind==='strum'){return p.id==='strum4'?'Б Б Б Б':p.id==='strum6'?'Б·Б5·5Б5':'ББ55ББ55';}if(state.instrument==='bass'&&p.kind==='pick')return p.steps.map(s=>s==='b'?'Б':String(4-stringIndex(s))).join('');return p.glyphs;}
+function patternName(p){if(state.instrument==='bass'&&p.kind==='strum')return p.id==='strum4'?'Пульс':p.id==='strum6'?'Синкопа':'Пульс + квінта';return p.name;}
+function renderPatterns(){$('patternShort').textContent=patternName(state.pattern);document.querySelectorAll('.rhythm-tab').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.kind===state.pattern.kind)));const group=PATTERNS.filter(p=>p.kind===state.pattern.kind);$('patternOptions').innerHTML='';group.forEach(p=>{const b=document.createElement('button');b.className='pattern-button';b.dataset.pattern=p.id;b.setAttribute('aria-pressed',String(p===state.pattern));b.innerHTML='<span class="pattern-name">'+patternName(p)+'</span><span class="pattern-glyphs" aria-hidden="true">'+patternGlyphs(p)+'</span>';b.addEventListener('click',()=>{ensureAudio();state.pattern=p;state.manualStep=-1;renderPatterns();restartTransport();persist();});$('patternOptions').appendChild(b);});$('patternDescription').textContent=state.instrument==='bass'&&state.pattern.kind==='strum'?'Б — основний тон, 5 — квінта. Послухай басовий малюнок і повтори ноти по одній.':state.instrument==='bass'?'Б — струна № '+(4-bassIndex())+' з основним тоном. Далі грай струни за номерами: малюнок охоплює ноти вибраної гармонії.':state.pattern.desc;renderSequence();}
+function displayStep(s,k){if(s===null)return '·';if(state.pattern.kind==='strum'){if(state.instrument==='bass')return bassRhythmIndex(k)===bassIndex()?'Б':'5';return s==='d'?'↓':'↑';}return s==='b'?'Б':state.instrument==='bass'?String(4-stringIndex(s)):String(s);}
+function renderSequence(){const p=state.pattern;$('sequence').innerHTML='';p.steps.forEach((s,k)=>{const el=document.createElement('div');el.className='step'+(s===null?' rest':'');const count=p.meter==='6/8'?String(k+1):p.division===1?String(k+1):k%2===0?String(k/2+1):'і';el.innerHTML='<span class="stroke">'+displayStep(s,k)+'</span><span class="count">'+count+'</span>';$('sequence').appendChild(el);});$('meterLabel').textContent=p.meter;$('sequenceLabel').textContent=p.kind==='pick'?'НОМЕРИ СТРУН':'СХЕМА РИТМУ';updateStep(-1);}
+function updateStep(index){transport.active=index;Array.from($('sequence').children).forEach((el,k)=>el.classList.toggle('active',k===index));}
+function manualAdvance(direction,index){const p=state.pattern;let next=(state.manualStep+1)%p.steps.length;let loops=0;while(p.steps[next]===null&&loops++<p.steps.length)next=(next+1)%p.steps.length;let ok=false;if(p.kind==='pick')ok=index===stringIndex(p.steps[next]);else if(state.instrument==='bass')ok=index===bassRhythmIndex(next);else ok=direction===p.steps[next];if(ok){state.manualStep=next;updateStep(next);}}
+function roundRect(g,x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2));g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath();}
+function wood(g,x,y,w,h,light=false){g.save();g.beginPath();g.rect(x,y,w,h);g.clip();let seed=4871;const rand=()=>{seed=(seed*1664525+1013904223)>>>0;return seed/4294967296;};for(let j=0;j<110;j++){const yy=y+rand()*h;g.beginPath();g.moveTo(x,yy);g.bezierCurveTo(x+w*.25,yy+rand()*7-3,x+w*.65,yy+rand()*8-4,x+w,yy+rand()*5-2);g.lineWidth=rand()*.8+.2;g.strokeStyle=light?'rgba(71,31,9,'+(rand()*.10+.025)+')':'rgba(202,150,87,'+(rand()*.09+.03)+')';g.stroke();}g.restore();}
+function resize(){const bounds=canvas.getBoundingClientRect();const rect={width:canvas.clientWidth||(viewport.rotated?bounds.height:bounds.width),height:canvas.clientHeight||(viewport.rotated?bounds.width:bounds.height)};if(rect.width<1||rect.height<1)return;const dpr=Math.min(window.devicePixelRatio||1,2);canvas.width=Math.round(rect.width*dpr);canvas.height=Math.round(rect.height*dpr);const w=rect.width,h=rect.height,n=tuning().length;const x0=w<420?31:45,nx=w*.59,edge=w-18;const top=Math.min(55,h*.21),bot=h-28;geometry={w,h,dpr,n,x0,nx,edge,top,bot,ys:Array.from({length:n},(_,i)=>top+(bot-top)*i/(n-1)),fretXs:Array.from({length:6},(_,i)=>x0+(nx-x0)*i/5),bridge:w*.94,bodyCenter:w*.80};background=document.createElement('canvas');background.width=canvas.width;background.height=canvas.height;const g=background.getContext('2d');g.scale(dpr,dpr);drawBackground(g);wake();}
+function drawBackground(g){const G=geometry,{w,h,x0,nx,top,bot,bodyCenter}=G;const acoustic=state.instrument==='acoustic',bass=state.instrument==='bass';const cx=bodyCenter,cy=(top+bot)/2;g.clearRect(0,0,w,h);const aura=g.createRadialGradient(cx,cy,0,cx,cy,w*.55);aura.addColorStop(0,acoustic?'#d6ac401c':bass?'#e78b421a':'#499cbc20');aura.addColorStop(1,'#0000');g.fillStyle=aura;g.fillRect(0,0,w,h);
+ const left=w*.54,right=w*1.12,bodyTop=24,bodyBottom=h-22;
+ g.save();g.shadowColor='#0008';g.shadowBlur=25;g.shadowOffsetY=12;g.beginPath();
+ if(acoustic){g.moveTo(left+(right-left)*.38,bodyTop);g.bezierCurveTo(left-32,bodyTop-9,left-31,cy-52,left+7,cy-20);g.bezierCurveTo(left+27,cy+2,left-34,cy+30,left-31,cy+78);g.bezierCurveTo(left-26,bodyBottom+28,right+35,bodyBottom+45,right+47,cy+52);g.bezierCurveTo(right+49,cy+8,right+15,cy+6,right+29,cy-48);g.bezierCurveTo(right+39,bodyTop-6,right-39,bodyTop-17,left+(right-left)*.38,bodyTop);}
+ else{g.moveTo(left+10,cy-28);g.bezierCurveTo(left-10,bodyTop+32,left+8,bodyTop+9,left+38,bodyTop+8);g.bezierCurveTo(left+51,bodyTop+40,left+35,cy-54,left+74,cy-69);g.bezierCurveTo(right-40,bodyTop-4,right+3,bodyTop+14,right+17,cy-48);g.bezierCurveTo(right+38,cy+7,right+40,bodyBottom-6,right-31,bodyBottom+11);g.bezierCurveTo(left-4,bodyBottom+37,left-36,bodyBottom-25,left+5,cy+25);g.bezierCurveTo(left+16,cy+9,left+19,cy-2,left+10,cy-28);}
+ g.closePath();const finish=g.createLinearGradient(left,0,right,0);if(acoustic){finish.addColorStop(0,'#94602f');finish.addColorStop(.10,'#bd874b');finish.addColorStop(.48,'#dfb071');finish.addColorStop(.79,'#c99758');finish.addColorStop(1,'#8d5e2b');}else if(bass){finish.addColorStop(0,'#271912');finish.addColorStop(.2,'#7c3526');finish.addColorStop(.57,'#b26f35');finish.addColorStop(.9,'#713924');finish.addColorStop(1,'#221915');}else{finish.addColorStop(0,'#12272c');finish.addColorStop(.3,'#225562');finish.addColorStop(.64,'#307d89');finish.addColorStop(1,'#102c32');}g.fillStyle=finish;g.fill();g.shadowBlur=0;g.shadowOffsetY=0;g.strokeStyle=acoustic?'#ecd2a18c':'#adcdc84a';g.lineWidth=3.5;g.stroke();g.save();g.clip();if(acoustic||bass)wood(g,left-30,bodyTop,right-left+90,bodyBottom-bodyTop,true);const gloss=g.createLinearGradient(0,bodyTop,0,bodyBottom);gloss.addColorStop(0,'#fff2');gloss.addColorStop(.33,'#fff0');gloss.addColorStop(.82,'#0001');gloss.addColorStop(1,'#0004');g.fillStyle=gloss;g.fillRect(left-50,bodyTop-5,right-left+110,bodyBottom+30);g.restore();g.restore();
+ if(acoustic){const radius=Math.min(h*.285,w*.13);g.beginPath();g.arc(cx,cy,radius+9,0,Math.PI*2);g.fillStyle='#8b673a';g.fill();for(let i=0;i<6;i++){g.beginPath();g.arc(cx,cy,radius+2+i*1.3,0,Math.PI*2);g.strokeStyle=i%2?'#d5b781':'#60411f';g.lineWidth=1;g.stroke();}const hole=g.createRadialGradient(cx,cy+radius*.3,0,cx,cy,radius);hole.addColorStop(0,'#080b08');hole.addColorStop(.7,'#0b0d09');hole.addColorStop(1,'#252116');g.beginPath();g.arc(cx,cy,radius,0,Math.PI*2);g.fillStyle=hole;g.fill();g.strokeStyle='#4c3519';g.lineWidth=2;g.stroke();
+ }else{g.save();g.fillStyle=bass?'#171b19':'#d4d8bd';g.strokeStyle=bass?'#66533a':'#eef0d245';g.lineWidth=1.3;g.beginPath();g.moveTo(nx-9,top-13);g.lineTo(cx+18,top-22);g.bezierCurveTo(w*.96,top+30,w*.93,bot+39,cx+2,bot+22);g.lineTo(nx+4,bot+10);g.closePath();g.fill();g.stroke();g.restore();for(const p of [w*.71,w*.84]){roundRect(g,p-7,top-7,14,bot-top+14,4);g.fillStyle='#17201e';g.fill();g.strokeStyle='#566259';g.lineWidth=1;g.stroke();G.ys.forEach(y=>{g.beginPath();g.arc(p,y,2,0,Math.PI*2);g.fillStyle='#a9b3a3';g.fill();});}for(let j=0;j<2;j++){const kx=w*.9-j*24,ky=bot+23;g.beginPath();g.arc(kx,ky,7,0,Math.PI*2);g.fillStyle='#c5c8aa';g.fill();g.beginPath();g.arc(kx,ky,4,0,Math.PI*2);g.strokeStyle='#5f634e';g.lineWidth=1;g.stroke();}}
+ // Fingerboard: horizontal strings, thick string at the top.
+ g.save();g.shadowColor='#0008';g.shadowBlur=7;g.shadowOffsetY=6;roundRect(g,x0-5,top-21,nx-x0+20,bot-top+42,5);const neck=g.createLinearGradient(0,top-21,0,bot+21);neck.addColorStop(0,'#59432e');neck.addColorStop(.07,'#322a23');neck.addColorStop(.4,'#35271d');neck.addColorStop(.85,'#2a2019');neck.addColorStop(1,'#15140f');g.fillStyle=neck;g.fill();g.shadowBlur=0;g.shadowOffsetY=0;g.strokeStyle='#b09b734d';g.lineWidth=1;g.stroke();wood(g,x0,top-19,nx-x0+11,bot-top+38);g.restore();
+ const markerX=(G.fretXs[2]+G.fretXs[3])/2;g.beginPath();g.arc(markerX,cy,Math.min(4.2,(nx-x0)/30),0,Math.PI*2);g.fillStyle='#c8b98c65';g.fill();const marker5=(G.fretXs[4]+G.fretXs[5])/2;g.beginPath();g.arc(marker5,cy,Math.min(4.2,(nx-x0)/30),0,Math.PI*2);g.fill();
+ G.fretXs.forEach((x,k)=>{const width=k===0?5:2.7;const fret=g.createLinearGradient(x-width/2,0,x+width/2,0);fret.addColorStop(0,k===0?'#b5ac85':'#555e57');fret.addColorStop(.45,k===0?'#ece3bb':'#dadbc3');fret.addColorStop(1,k===0?'#92896b':'#6e7566');g.fillStyle=fret;g.fillRect(x-width/2,top-18,width,bot-top+36);if(k>0){g.font=(w<420?'9':'10')+'px system-ui';g.textAlign='center';g.fillStyle='#a4a891';g.fillText(k,(G.fretXs[k-1]+x)/2,bot+20);}});
+ const bx=G.bridge;roundRect(g,bx-5,top-12,14,bot-top+24,3);g.fillStyle=acoustic?'#3c2d1e':'#7c897d';g.fill();g.fillStyle=acoustic?'#d9d2b6':'#c9cec2';g.fillRect(bx-1,top-4,2.5,bot-top+8);
+ g.font='8px system-ui';g.fillStyle='#a1a78f';g.textAlign='right';g.fillText('лади',x0-7,bot+20);
+}
+function draw(now){frame=0;if(!geometry||!background)return;const G=geometry,{w,h,dpr,ys,x0,nx,bridge}=G;ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,canvas.width,canvas.height);ctx.drawImage(background,0,0);ctx.setTransform(dpr,0,0,dpr,0,0);const f=frets(),accent=INSTRUMENTS[state.instrument].accent,isBass=state.instrument==='bass';let alive=false;
+ if(state.chord.barre&&!isBass){const x=(G.fretXs[0]+G.fretXs[1])/2;roundRect(ctx,x-8,ys[0]-8,16,ys[5]-ys[0]+16,8);ctx.fillStyle='#bbd292b8';ctx.fill();ctx.strokeStyle='#e5f5c099';ctx.lineWidth=1;ctx.stroke();}
+ ys.forEach((y,i)=>{const v=vibrations[i];let power=0,age=0;if(v){age=(now-v.at)/1000;power=Math.max(0,v.velocity*Math.exp(-age*4));if(age>1.7){vibrations[i]=null;power=0;}else alive=true;}const silent=f[i]<0;const thick=isBass?3.1-i*.48:Math.max(.75,2.55-i*.34);const tone=isBass||i<3?'#bcb49b':'#d6d8c8';const amp=reduceMotion?0:Math.sin(age*83)*power*(isBass?5:3.7);const left=x0-7,right=bridge+4;ctx.beginPath();ctx.moveTo(left,y+2);ctx.quadraticCurveTo((nx+right)/2,y+2+amp,right,y+2);ctx.lineWidth=thick+1.2;ctx.strokeStyle='#0006';ctx.stroke();if(power>.03){ctx.beginPath();ctx.moveTo(left,y);ctx.quadraticCurveTo((nx+right)/2,y+amp,right,y);ctx.lineWidth=thick+power*8;ctx.strokeStyle=isBass?'rgba(237,197,153,'+power*.22+')':state.instrument==='electric'?'rgba(179,216,231,'+power*.22+')':'rgba(197,229,155,'+power*.22+')';ctx.stroke();}ctx.beginPath();ctx.moveTo(left,y);ctx.quadraticCurveTo((nx+right)/2,y+amp,right,y);ctx.lineWidth=thick;ctx.strokeStyle=silent?'#7b79616b':power>.16?accent:tone;ctx.stroke();ctx.beginPath();ctx.moveTo(left,y-.45);ctx.lineTo(right,y-.45);ctx.strokeStyle=silent?'#b2ad8725':'#fff4';ctx.lineWidth=.45;ctx.stroke();
+ // Open / muted states and physical string numbers remain visible at the nut.
+ ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=(w<420?'11':'12')+'px system-ui';ctx.fillStyle=silent?'#a79d84':accent;ctx.fillText(silent?'×':f[i]===0?'○':'',x0-13,y);ctx.font='8px system-ui';ctx.fillStyle=silent?'#76826e':'#b9c1a9';ctx.fillText(String(ys.length-i),w<420?8:13,y-4);ctx.font='7px system-ui';ctx.fillStyle='#748a74';ctx.fillText(INSTRUMENTS[state.instrument].letters[i],w<420?8:13,y+6);
+ if(f[i]>0){const fret=f[i];const x=(G.fretXs[fret-1]+G.fretXs[fret])/2;const r=w<360?8.2:w<600?9.5:12.2;ctx.beginPath();ctx.arc(x,y,r+2,0,Math.PI*2);ctx.fillStyle='#0a130966';ctx.fill();ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fillStyle=power>.16?'#f3f5d9':accent;ctx.fill();ctx.strokeStyle='#fff4';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#243121';ctx.font='650 '+(w<420?'10':'12')+'px system-ui';ctx.fillText(isBass?noteLabel(tuning()[i]+f[i]):state.chord.fingers[i],x,y+.5);}
+ const label=isBass?noteLabel(tuning()[i]+Math.max(0,f[i])):String(ys.length-i);ctx.font=(isBass?'600 ':'')+(w<420?'9':'10')+'px system-ui';ctx.fillStyle=silent?'#b4b29777':power>.15?'#f9f8da':'#e0dbc0';ctx.textAlign='center';ctx.fillText(silent?'×':label,w-9,y);if(isBass&&i===bassIndex()){ctx.font='8px system-ui';ctx.fillStyle=accent;ctx.fillText('Б',w-9,y+12);}
+ });ctx.textBaseline='alphabetic';
+ if(transport.running||visualEvents.length||alive)wake();
+}
+function animate(now){frame=0;const current=audio.currentTime;if(visualEvents.length){visualEvents.sort((a,b)=>a.time-b.time);while(visualEvents.length&&visualEvents[0].time<=current+.008){const event=visualEvents.shift();if(event.kind==='step')updateStep(event.step);else vibrations[event.index]={at:now,velocity:event.velocity};}}if(now-lastFrame<20&&!reduceMotion){wake();return;}lastFrame=now;draw(now);}
+function wake(){if(!frame)frame=requestAnimationFrame(animate);}
+function point(e){const r=canvas.getBoundingClientRect();if(viewport.rotated)return{x:(e.clientY-r.top)*geometry.w/r.height,y:(r.right-e.clientX)*geometry.h/r.width};return{x:(e.clientX-r.left)*geometry.w/r.width,y:(e.clientY-r.top)*geometry.h/r.height};}
+function soundGesture(index,velocity){afterReady(()=>pluck(index,undefined,velocity));}
+function nearestString(y){if(!geometry)return -1;let d=Infinity,index=-1;geometry.ys.forEach((sy,i)=>{const delta=Math.abs(sy-y);if(delta<d){d=delta;index=i;}});const gap=(geometry.bot-geometry.top)/(geometry.n-1);return d<=gap*.46?index:-1;}
+canvas.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'&&e.button!==0)return;e.preventDefault();if(!audio.context||audio.context.state!=='running'){showAudioGate();return;}if(transport.running||transport.starting)stopTransport();const p=point(e);try{canvas.setPointerCapture(e.pointerId);}catch(err){}const index=nearestString(p.y);pointers.set(e.pointerId,{...p,startY:p.y,time:e.timeStamp,lastString:index,lastHit:e.timeStamp,direction:0,strokeDirection:0,skipInitialIndex:index,advanced:false});if(index>=0){soundGesture(index,.72);if(state.pattern.kind==='pick'||state.instrument==='bass')manualAdvance(null,index);}wake();});
+canvas.addEventListener('pointermove',e=>{const old=pointers.get(e.pointerId);if(!old||!geometry)return;e.preventDefault();const p=point(e),dy=p.y-old.y,dt=Math.max(1,e.timeStamp-old.time);if(Math.abs(dy)<.25){pointers.set(e.pointerId,{...old,...p,time:e.timeStamp});return;}const direction=dy>0?1:-1;if(old.direction!==0&&old.direction!==direction)old.skipInitialIndex=-1;const speed=Math.min(1,Math.abs(dy)/dt/2.2),velocity=.51+speed*.38;const rawCrossed=[];geometry.ys.forEach((sy,i)=>{if((dy>0&&sy>old.y&&sy<=p.y)||(dy<0&&sy<old.y&&sy>=p.y)){const crossingX=old.x+(p.x-old.x)*(sy-old.y)/dy;if(crossingX>=0&&crossingX<=geometry.w)rawCrossed.push(i);}});if(direction<0)rawCrossed.reverse();const crossed=[];rawCrossed.forEach(i=>{if(i===old.skipInitialIndex){old.skipInitialIndex=-1;return;}old.skipInitialIndex=-1;crossed.push(i);});if(crossed.length){afterReady(()=>{const now=audio.currentTime;crossed.forEach((i,n)=>pluck(i,now+n*.005,velocity));});const last=crossed[crossed.length-1];if(state.pattern.kind==='pick'||state.instrument==='bass')crossed.forEach(i=>manualAdvance(null,i));else if(!old.advanced||direction!==old.strokeDirection){manualAdvance(direction>0?'d':'u',last);old.advanced=true;}old.strokeDirection=direction;old.lastString=last;old.lastHit=e.timeStamp;}
+ pointers.set(e.pointerId,{...old,...p,time:e.timeStamp,direction});wake();});
+function releasePointer(e){pointers.delete(e.pointerId);try{if(canvas.hasPointerCapture(e.pointerId))canvas.releasePointerCapture(e.pointerId);}catch(err){}}
+canvas.addEventListener('pointerup',releasePointer);canvas.addEventListener('pointercancel',e=>{inputEpoch++;releasePointer(e);});canvas.addEventListener('lostpointercapture',e=>pointers.delete(e.pointerId));canvas.addEventListener('contextmenu',e=>e.preventDefault());
+CHORDS.forEach((c,k)=>{const b=document.createElement('button');b.className='chord-button';b.dataset.chord=c.id;b.setAttribute('aria-label',c.id+' — '+c.name);b.setAttribute('aria-pressed','false');b.innerHTML='<span class="chord-symbol">'+c.id+'</span><span class="chord-key">'+(k+1)%10+'</span>';b.addEventListener('pointerdown',()=>{ensureAudio();changeChord(c);});b.addEventListener('click',()=>{ensureAudio();changeChord(c);});$('chordButtons').appendChild(b);});
+document.querySelectorAll('.instrument-button').forEach(b=>b.addEventListener('click',()=>{ensureAudio();changeInstrument(b.dataset.instrument);}));
+document.querySelectorAll('.rhythm-tab').forEach(b=>b.addEventListener('click',()=>{if(state.pattern.kind===b.dataset.kind)return;state.pattern=PATTERNS.find(p=>p.kind===b.dataset.kind);state.manualStep=-1;renderPatterns();restartTransport();persist();}));
+$('playButton').addEventListener('click',toggleTransport);
+$('dampButton').addEventListener('click',()=>{stopTransport();vibrations.fill(null);state.manualStep=-1;wake();});
+$('tempo').value=state.tempo;$('tempoValue').textContent=state.tempo;$('tempo').addEventListener('input',e=>{state.tempo=Number(e.target.value);$('tempoValue').textContent=state.tempo;persist();});
+$('volume').value=state.volume;$('volume').addEventListener('input',e=>{state.volume=Number(e.target.value);state.muted=false;audio.setVolume(state.volume/100);setAudioStatus();persist();});
+$('startAudio').addEventListener('click',startAudio);
+$('soundToggle').addEventListener('click',async()=>{
+ if(!state.unlocked||!audio.context||audio.context.state!=='running')return startAudio();
+ state.muted=!(state.muted||state.volume===0);
+ if(!state.muted&&state.volume===0){state.volume=80;$('volume').value=80;}
+ audio.setVolume(state.muted?0:state.volume/100);setAudioStatus();persist();
+});
+function setRhythmOpen(open){$('rhythmPanel').hidden=!open;$('rhythmButton').setAttribute('aria-expanded',String(open));}
+$('rhythmButton').addEventListener('click',()=>setRhythmOpen($('rhythmPanel').hidden));
+$('closeRhythm').addEventListener('click',()=>setRhythmOpen(false));
+canvas.addEventListener('pointerdown',()=>setRhythmOpen(false));
+$('fullscreenButton').addEventListener('click',()=>{
+ const root=document.documentElement;
+ try{
+  if(document.fullscreenElement){const p=document.exitFullscreen();if(p&&p.catch)p.catch(()=>{});}
+  else if(root.requestFullscreen){const p=root.requestFullscreen();if(p&&p.then)p.then(()=>{if(window.screen&&screen.orientation&&screen.orientation.lock)screen.orientation.lock('landscape').catch(()=>{});}).catch(()=>toast('Гітара вже займає доступний екран.'));}
+  else toast('Гітара вже займає доступний екран.');
+ }catch(e){toast('Гітара вже займає доступний екран.');}
+});
+$('helpButton').addEventListener('click',()=>{stopTransport();setRhythmOpen(false);const d=$('helpDialog');if(d.showModal)d.showModal();else d.setAttribute('open','');});$('closeHelp').addEventListener('click',()=>$('helpDialog').close());$('helpDialog').addEventListener('click',e=>{if(e.target===$('helpDialog')){const r=$('helpDialog').getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)$('helpDialog').close();}});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){setRhythmOpen(false);stopTransport();vibrations.fill(null);wake();return;}if(e.repeat||e.ctrlKey||e.altKey||e.metaKey||$('helpDialog').open||!$('audioGate').hidden)return;const target=e.target;if(target.matches('input,textarea,select,[contenteditable=true]'))return;if(target.matches('button')&&(e.code==='Space'||e.key==='Enter'))return;const numbers=['Digit1','Digit2','Digit3','Digit4','Digit5','Digit6','Digit7','Digit8','Digit9','Digit0'];let i=numbers.indexOf(e.code);if(i>=0){e.preventDefault();ensureAudio();changeChord(CHORDS[i]);return;}const keys=['KeyQ','KeyW','KeyE','KeyR','KeyT','KeyY'];i=keys.indexOf(e.code);if(i>=0&&i<tuning().length){e.preventDefault();if(transport.running||transport.starting)stopTransport();soundGesture(i,.75);manualAdvance(null,i);return;}if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();if(transport.running||transport.starting)stopTransport();const dir=e.key==='ArrowDown'?'d':'u';afterReady(()=>strum(dir,audio.currentTime,.76));manualAdvance(dir,-1);return;}if(e.code==='Space'){e.preventDefault();toggleTransport();}});
+document.addEventListener('visibilitychange',()=>{if(document.hidden){stopTransport();pointers.clear();vibrations.fill(null);}});window.addEventListener('pagehide',()=>{stopTransport();pointers.clear();});window.addEventListener('blur',()=>{pointers.clear();stopTransport();});
+function fitViewport(){
+ const width=Math.max(1,window.innerWidth||document.documentElement.clientWidth),height=Math.max(1,window.innerHeight||document.documentElement.clientHeight);
+ const rotated=width<height,changed=viewport.width!==width||viewport.height!==height;
+ if(changed&&viewport.width){stopTransport();pointers.clear();vibrations.fill(null);}
+ viewport.width=width;viewport.height=height;viewport.rotated=rotated;
+ document.body.classList.toggle('portrait',rotated);
+ document.documentElement.style.setProperty('--view-w',(rotated?height:width)+'px');
+ document.documentElement.style.setProperty('--view-h',(rotated?width:height)+'px');
+ cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(resize);
+}
+window.addEventListener('resize',fitViewport);
+window.addEventListener('orientationchange',()=>{pointers.clear();inputEpoch++;fitViewport();});
+if(window.visualViewport)window.visualViewport.addEventListener('resize',fitViewport);
+if(window.ResizeObserver)new ResizeObserver(()=>{cancelAnimationFrame(resizeFrame);resizeFrame=requestAnimationFrame(resize);}).observe($('canvasWrap'));
+fitViewport();
+document.body.dataset.instrument=state.instrument;audio.setInstrument(state.instrument);audio.setVolume(state.volume/100);document.querySelectorAll('.instrument-button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.instrument===state.instrument)));renderChord();renderPatterns();setAudioStatus();resize();
+// Read-only diagnostics aid offline compatibility checks; no personal data is collected.
+window.GuitarStudio={get state(){return {chord:state.chord.id,instrument:state.instrument,pattern:state.pattern.id,tempo:state.tempo,volume:state.volume,muted:state.muted,running:transport.running,stringCount:tuning().length,frets:[...frets()],midi:tuning().map((n,i)=>frets()[i]<0?null:n+frets()[i]),bassIndex:bassIndex()};},get audio(){return audio;},get viewport(){return {...viewport};},get geometry(){return geometry?{...geometry,ys:[...geometry.ys]}:null;},chords:CHORDS,patterns:PATTERNS};
+})();
+
+</script>
+</body></html>
