@@ -1,0 +1,13 @@
+* text=auto
+*.html text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.cjs text eol=lf
+*.js text eol=lf
+*.svg text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+*.png binary
+*.webp binary
+*.tar binary
+*.gz binary

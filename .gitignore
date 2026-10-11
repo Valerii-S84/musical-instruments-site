@@ -2,5 +2,26 @@
 .env.*
 node_modules/
 .sites/
+backups/
 *.tar
 *.tar.gz
+
+# Ключі та локальні повноваження не входять у репозиторій.
+*.pem
+*.key
+*.p12
+*.pfx
+credentials*.json
+secrets*.json
+
+# Тимчасові результати перевірок і локальні налаштування.
+artifacts/
+work/
+test-results/
+playwright-report/
+coverage/
+*.log
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
